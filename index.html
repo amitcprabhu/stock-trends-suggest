@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101d22">
+    <meta name="description" content="A transparent, rules-based market trend dashboard for NIFTY 50, SENSEX, and BANK NIFTY.">
+    <title>TrendSignal — Market intelligence</title>
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.svg">
+    <link rel="stylesheet" href="/styles.css">
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="/" aria-label="TrendSignal home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none"><path d="M5 21.5 12 14l5 4.5L27 8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.5 8H27v6.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="brand-name">trend<span>signal</span></span>
+        </a>
+        <div class="side-label">WORKSPACE</div>
+        <nav class="primary-nav" aria-label="Main navigation">
+          <a class="nav-link active" href="#overview" aria-current="page">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.6"/><rect x="13" y="3" width="8" height="5" rx="1.6"/><rect x="13" y="10" width="8" height="11" rx="1.6"/><rect x="3" y="13" width="8" height="8" rx="1.6"/></svg>
+            <span>Overview</span>
+          </a>
+          <a class="nav-link" href="#watchlist">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16M4 12h16M4 18.5h16"/><circle cx="8" cy="5.5" r="1.7"/><circle cx="15" cy="12" r="1.7"/><circle cx="10" cy="18.5" r="1.7"/></svg>
+            <span>Tracked indexes</span><span class="nav-count" id="watchlist-count">3</span>
+          </a>
+          <a class="nav-link" href="#methodology">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18V6m0 12h16M7 15l4-4 3 2 5-6"/><circle cx="19" cy="7" r="1.5"/></svg>
+            <span>How it works</span>
+          </a>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="sidebar-note">
+            <span class="note-spark" aria-hidden="true">✳</span>
+            <p>Signals are clues,<br>not crystal balls.</p>
+            <span>Always do your own research.</span>
+          </div>
+          <div class="user-block">
+            <span class="user-avatar">IN</span>
+            <span class="user-details"><strong>Indian markets</strong><small>Local workspace</small></span>
+            <span class="market-dot" title="NSE market hours"></span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content" id="overview">
+        <header class="topbar">
+          <div class="breadcrumb">Workspace <span>/</span> <strong>Overview</strong></div>
+          <div class="topbar-actions">
+            <span class="market-open"><span class="pulse-dot"></span><span id="market-status">Indian index data</span></span>
+            <span class="topbar-divider"></span>
+            <button class="icon-button" id="alerts-button" type="button" aria-label="Enable browser alerts" title="Enable browser alerts">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9m-8 12h4"/></svg>
+              <span class="notification-dot" id="notification-dot" hidden></span>
+            </button>
+            <span class="user-avatar top-avatar">IN</span>
+          </div>
+        </header>
+
+        <div class="page-content">
+          <section class="welcome-row">
+            <div>
+              <div class="eyebrow"><span class="eyebrow-line"></span> MARKET PULSE <span class="eyebrow-date" id="today-date"></span></div>
+              <h1>See the trend.<br><span>Find your next move.</span></h1>
+              <p class="welcome-copy">A clearer view of the Indian market, backed by price action — not noise.</p>
+            </div>
+            <div class="welcome-actions">
+              <span class="data-status"><span class="status-indicator" id="data-indicator"></span><span id="data-status">Connecting to analysis server</span></span>
+              <button class="button button-dark" id="refresh-button" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.6 9a7 7 0 0 1 11.6-2L20 12M4 12l2.8 5a7 7 0 0 0 11.6-2"/></svg>
+                  Refresh readings
+              </button>
+            </div>
+          </section>
+
+          <section class="market-section" aria-labelledby="market-heading">
+            <div class="section-heading">
+              <div><span class="section-kicker">THE BIG PICTURE</span><h2 id="market-heading">Index pulse</h2></div>
+              <span class="data-source"><span class="source-dot"></span> NIFTY · SENSEX · BANK NIFTY</span>
+            </div>
+            <div class="pulse-grid" id="market-cards" aria-live="polite">
+              <div class="pulse-card skeleton-card"></div><div class="pulse-card skeleton-card"></div><div class="pulse-card skeleton-card"></div>
+            </div>
+          </section>
+
+          <section class="analysis-section" aria-labelledby="analysis-heading">
+            <div class="section-heading analysis-heading">
+              <div><span class="section-kicker">BUILT ON PRICE ACTION</span><h2 id="analysis-heading">Trend analysis</h2></div>
+              <span class="live-badge"><span class="pulse-dot"></span> Rule-based signals</span>
+            </div>
+            <div class="analysis-grid">
+              <article class="chart-card card">
+                <div class="chart-header">
+                  <div class="selected-asset">
+                    <span class="asset-avatar" id="selected-avatar">N</span>
+                    <div><h3 id="selected-name">NIFTY 50</h3><span id="selected-symbol">^NSEI · Loading prices…</span></div>
+                  </div>
+                  <div class="chart-price"><strong id="chart-price">—</strong><span id="chart-change">Daily close</span></div>
+                </div>
+                <div class="chart-toolbar">
+                  <div class="range-tabs" role="group" aria-label="Chart time range">
+                    <button class="range-tab" data-range="1M" type="button">1M</button>
+                    <button class="range-tab active" data-range="3M" type="button" aria-pressed="true">3M</button>
+                    <button class="range-tab" data-range="6M" type="button">6M</button>
+                    <button class="range-tab" data-range="1Y" type="button">1Y</button>
+                  </div>
+                  <span class="chart-legend"><i class="legend-line"></i> Closing price</span>
+                </div>
+                <div class="chart-wrap">
+                  <canvas id="price-chart" role="img" aria-label="Historical closing-price chart"></canvas>
+                  <div class="chart-empty" id="chart-empty" hidden>Price history is unavailable. Try refreshing.</div>
+                </div>
+                <div class="chart-footer"><span id="chart-start">—</span><span>Daily closing prices · Shared server analysis</span><span id="chart-end">—</span></div>
+              </article>
+
+              <aside class="signal-card card" id="signal-panel" aria-live="polite">
+                <div class="signal-topline"><span class="section-kicker">TECHNICAL SETUP</span><span class="signal-period">1 year · daily</span></div>
+                <div class="signal-title">
+                  <div><h3>Trend signal</h3><p>Multiple indicators, one read.</p></div>
+                  <span class="signal-icon" id="signal-icon" aria-hidden="true">↗</span>
+                </div>
+                <div class="recommendation hold" id="recommendation"><span class="recommendation-dot"></span><span id="signal-label">Loading</span><span class="recommendation-divider"></span><span class="recommendation-sub" id="signal-alignment">—</span></div>
+                <p class="signal-summary" id="signal-summary">Fetching price history to calculate trend alignment.</p>
+                <div class="factor-list">
+                  <div class="factor-row"><span class="factor-name"><i class="factor-dot" id="factor-price-dot"></i> Price vs. EMA 20</span><strong id="factor-price">—</strong></div>
+                  <div class="factor-row"><span class="factor-name"><i class="factor-dot" id="factor-trend-dot"></i> EMA 20 vs. EMA 50</span><strong id="factor-trend">—</strong></div>
+                  <div class="factor-row"><span class="factor-name"><i class="factor-dot" id="factor-rsi-dot"></i> RSI (14)</span><strong id="factor-rsi">—</strong></div>
+                  <div class="factor-row"><span class="factor-name"><i class="factor-dot" id="factor-macd-dot"></i> MACD momentum</span><strong id="factor-macd">—</strong></div>
+                  <div class="factor-row"><span class="factor-name"><i class="factor-dot" id="factor-long-dot"></i> Price vs. EMA 200</span><strong id="factor-long">—</strong></div>
+                </div>
+                <div class="signal-disclaimer"><span aria-hidden="true">ⓘ</span> A rules-based pattern, not a prediction or a promise.</div>
+                <section class="ai-insight" aria-labelledby="ai-insight-heading">
+                  <div class="ai-insight-heading">
+                    <div><span class="section-kicker">GENERATIVE AI · LOCAL MODEL</span><h4 id="ai-insight-heading">A closer read</h4></div>
+                    <span class="ai-status" id="ai-insight-status">Waiting for the local model</span>
+                  </div>
+                  <p class="ai-insight-summary" id="ai-insight-summary">The analyzer will explain the indicator readings after its first run.</p>
+                  <span class="ai-insight-label">What stands out</span>
+                  <ul id="ai-drivers"></ul>
+                  <span class="ai-insight-label">Risks to keep in mind</span>
+                  <ul id="ai-risks"></ul>
+                  <span class="ai-insight-time" id="ai-insight-time">LLM commentary is separate from the rule-based signal.</span>
+                </section>
+              </aside>
+            </div>
+          </section>
+
+          <section class="watchlist-section" id="watchlist" aria-labelledby="watchlist-heading">
+            <div class="section-heading watchlist-heading">
+            <div><span class="section-kicker">INDEX-ONLY PAPER TRACKING</span><h2 id="watchlist-heading">Tracked indexes <span id="watchlist-total">3</span></h2></div>
+              <span class="data-source">Managed by the analysis service</span>
+            </div>
+            <div class="table-card card">
+              <div class="watchlist-table-wrap">
+                <table class="watchlist-table">
+                  <thead><tr><th scope="col">ASSET</th><th scope="col">PRICE <span class="table-sort">↓</span></th><th scope="col">DAY CHANGE</th><th scope="col">TREND SIGNAL</th><th scope="col">ALIGNMENT</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr></thead>
+                  <tbody id="watchlist-rows"><tr><td colspan="6"><div class="table-loading"><span class="spinner"></span> Reading the market…</div></td></tr></tbody>
+                </table>
+              </div>
+              <div class="table-footnote"><span><span class="source-dot"></span>Index predictions are recorded and scored automatically.</span><span>Daily data · May be delayed</span></div>
+            </div>
+          </section>
+
+          <section class="prediction-section" id="prediction-review" aria-labelledby="prediction-heading">
+            <div class="section-heading prediction-heading">
+              <div><span class="section-kicker">INDEX-ONLY PAPER TRACKING · NO TRADES</span><h2 id="prediction-heading">Index prediction scorecard</h2></div>
+              <span class="data-source">Selected index · rolling 90 days</span>
+            </div>
+            <p class="prediction-intro">Directional accuracy compares BUY/SELL signals with the actual daily close after each horizon. HOLD and unchanged results are excluded from the accuracy denominator.</p>
+            <div class="prediction-horizons" id="prediction-horizons" aria-live="polite">
+              <div class="prediction-empty">Scorecard appears after the first prediction.</div>
+            </div>
+            <div class="prediction-details">
+              <article class="prediction-detail-card"><h3>Recent predictions vs. outcome</h3><ul id="prediction-recent"></ul></article>
+              <article class="prediction-detail-card"><h3>Common factors in missed calls</h3><ul id="prediction-misses"></ul></article>
+            </div>
+            <p class="prediction-caveat">*Accuracy with fewer than 30 scored outcomes is an early sample. Historical accuracy is not a probability of future success or investment advice. Returns ignore fees, spreads, slippage, dividends and intraday price moves. “Why it missed” lists indicator conditions observed at signal time; it does not establish the cause of the price move.</p>
+          </section>
+
+          <section class="methodology-section" id="methodology">
+            <div class="method-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.6 5.4L20.5 9l-4.2 4.1 1 5.9-5.3-2.8-5.3 2.8 1-5.9L3.5 9l5.9-.6L12 3Z"/></svg></div>
+            <div><strong>A signal is a starting point, not a sure thing.</strong><p>Signals use EMA crossovers, RSI and MACD on daily prices. Alignment measures how many indicators agree — it is not a probability of profit. Market data is provided by Yahoo Finance and may be delayed.</p></div>
+            <a href="https://finance.yahoo.com/" target="_blank" rel="noreferrer">About data <span aria-hidden="true">↗</span></a>
+          </section>
+          <footer class="page-footer"><span>Made for thoughtful market watching.</span><span>Not investment advice · Invest responsibly</span></footer>
+        </div>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
